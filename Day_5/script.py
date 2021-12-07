@@ -100,4 +100,4 @@ def hydrothermal_venture_part2():
 print(hydrothermal_venture_part1()) # 7269
 
 ### PART 2
-print(hydrothermal_venture_part2())# 21140
+print(hydrothermal_venture_part2()) # 21140
