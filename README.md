@@ -1,6 +1,6 @@
 # Advent_of_Code_2021
 
-## Stars collected: 10
+## Stars collected: 12
 
 * Day 1: https://adventofcode.com/2021/day/1
 
@@ -11,3 +11,5 @@
 * Day 4: https://adventofcode.com/2021/day/4
 
 * Day 5: https://adventofcode.com/2021/day/5
+
+* Day 6: https://adventofcode.com/2021/day/6
