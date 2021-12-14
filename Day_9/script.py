@@ -91,24 +91,30 @@ def smoke_bassin_part1():
     return risk_level
 
 ## PART 2
-def get_lake(comparison_values, indexes, pointed_value, lines_array, i, k, size):
+def get_lake(comparison_values, indexes, pointed_value, lines_array, i, k, size, visited_points):
     for j in range(len(comparison_values)):
-        if comparison_values[j] == pointed_value+1:
+        if comparison_values[j] == pointed_value+1 and comparison_values[j] < 9 and indexes[j] not in visited_points:
+            visited_points.append(indexes[j])
             new_comparison_values, new_indexes = get_comparison_values(lines_array, indexes[j][0], indexes[j][1])
-            size += 1
             print(comparison_values[j], new_comparison_values, new_indexes)
-            get_lake(new_comparison_values, new_indexes, comparison_values[j], lines_array, indexes[j][0], indexes[j][1], size)
-        return size
+            size = get_lake(new_comparison_values, new_indexes, comparison_values[j], lines_array, indexes[j][0], indexes[j][1], size+1, visited_points)
+    print(size)
+    return size
 
 lines_array = open_file()
 bassins_sizes = []
+visited_points = []
 for i in range(len(lines_array)):
     for k in range(len(lines_array[i])):
         pointed_value = int(lines_array[i][k])
         comparison_values, indexes = get_comparison_values(lines_array, i, k)
         if is_low_point(pointed_value, comparison_values):
-            bassins_sizes.append(get_lake(comparison_values, indexes, pointed_value, lines_array, i, k, 1))
+            print(i, k, pointed_value)
+            visited_points.append((i, k))
+            bassins_sizes.append(get_lake(comparison_values, indexes, pointed_value, lines_array, i, k, 1, visited_points))
+bassins_sizes.sort()
 print(bassins_sizes)
+
 ## TESTS
 ### PART 1
 #print(smoke_bassin_part1()) # 486
