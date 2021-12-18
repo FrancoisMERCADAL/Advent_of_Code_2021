@@ -42,33 +42,38 @@ def get_neighbours(lines_array, i, k):
         neighbours = [(i-1,k), (i,k-1), (i,k+1), (i+1,k)]
     return neighbours
 
-lines_array = open_file()
-nb_lines = len(lines_array)
-nb_columns = len(lines_array[0])
-costs_array = [[1000000 for i in range(len(lines_array[0]))] for k in range(len(lines_array))]
-for i in range(len(lines_array)):
-    for k in range(len(lines_array[i])):
-        if i == 0 and k == 0:
-            costs_array[0][0] = lines_array[i][k]
-        else:
-            costs = []
-            neighbours = get_neighbours(lines_array, i, k)
-            for neighbour in neighbours:
-                costs.append(lines_array[i][k] + costs_array[neighbour[0]][neighbour[1]])
-            costs_array[i][k] = min(costs)
-            # perform a relaxation
-            # recalculate costs for each neighbour
-            spots_to_recalculate = get_neighbours(lines_array, i, k)
-            relaxed_points = []
-            while len(spots_to_recalculate) != 0:
+def chiton_part1():
+    lines_array = open_file()
+    costs_array = [[1000000 for i in range(len(lines_array[0]))] for k in range(len(lines_array))]
+    for i in range(len(lines_array)):
+        for k in range(len(lines_array[i])):
+            if i == 0 and k == 0:
+                costs_array[0][0] = lines_array[i][k]
+            else:
                 costs = []
-                spot = spots_to_recalculate.pop(0)
-                check_neighbours = get_neighbours(lines_array, spot[0], spot[1])
-                for neighbour in check_neighbours:
-                    costs.append(lines_array[spot[0]][spot[1]] + costs_array[neighbour[0]][neighbour[1]])
-                min_cost = min(costs)
-                if min_cost < costs_array[spot[0]][spot[1]] and (spot[0], spot[1]) not in relaxed_points:
-                    costs_array[spot[0]][spot[1]] = min_cost
-                    spots_to_recalculate += get_neighbours(lines_array, spot[0], spot[1])
-                relaxed_points.append((spot[0], spot[1]))
-print(costs_array)
+                neighbours = get_neighbours(lines_array, i, k)
+                for neighbour in neighbours:
+                    costs.append(lines_array[i][k] + costs_array[neighbour[0]][neighbour[1]])
+                costs_array[i][k] = min(costs)
+                # perform a relaxation
+                # recalculate costs for each neighbour
+                spots_to_recalculate = get_neighbours(lines_array, i, k)
+                relaxed_points = []
+                while len(spots_to_recalculate) != 0:
+                    costs = []
+                    spot = spots_to_recalculate.pop(0)
+                    check_neighbours = get_neighbours(lines_array, spot[0], spot[1])
+                    for neighbour in check_neighbours:
+                        costs.append(lines_array[spot[0]][spot[1]] + costs_array[neighbour[0]][neighbour[1]])
+                    min_cost = min(costs)
+                    if min_cost < costs_array[spot[0]][spot[1]] and (spot[0], spot[1]) not in relaxed_points:
+                        costs_array[spot[0]][spot[1]] = min_cost
+                        #spots_to_recalculate += get_neighbours(lines_array, spot[0], spot[1])
+                    relaxed_points.append((spot[0], spot[1]))
+    return costs_array[len(lines_array)-1][-1]
+
+## TESTS
+### PART 1
+print(chiton_part1()) # 362
+
+### PART 2
